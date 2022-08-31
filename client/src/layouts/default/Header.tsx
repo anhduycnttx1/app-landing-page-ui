@@ -29,9 +29,9 @@ const HeaderLayout = (): React.ReactElement => {
 
         <Space align="center" size="large">
           {/* Change Setting Account */}
-          <Dropdown overlay={menu(menuAccount)} placement="bottomCenter">
+          <Dropdown overlay={menu(menuAccount)} placement="bottomRight">
             <Space size={10} className="cursor-pointer ">
-              <Avatar size={25} src={urlAvt} />
+              <Avatar size={35} src={urlAvt} />
               <span>{user}</span>
             </Space>
           </Dropdown>

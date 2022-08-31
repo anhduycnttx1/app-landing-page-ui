@@ -99,11 +99,13 @@ const HomeContainer = (props: PropsHomeContainer) => {
 
   const datas = [
     {
+      key: 1,
       title: 'Trang bán hàng',
       status: true,
       updateAt: '09:02 01/09/2022',
     },
     {
+      key: 2,
       title: 'Test',
       status: false,
       updateAt: '14:23 31/09/2022',
@@ -138,7 +140,7 @@ const HomeContainer = (props: PropsHomeContainer) => {
         <Select defaultValue="all" style={{ width: 200 }} onChange={handleChange}>
           <Option value="all">Tất cả</Option>
           <Option value="active">Đang hoạt động</Option>
-          <Option value="disabled">Dừng hoạt động</Option>
+          <Option value="disabled">Tạm dừng</Option>
           <Option value="clear">Đã xoá</Option>
         </Select>
       </Space>
