@@ -1,3 +1,6 @@
+import { MenuProps } from 'antd'
+import { HiOutlineUser, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
+
 const initialPages = [
   { id: 'page-1', title: 'Page 1', summary: 'Page 1 Summary' },
   { id: 'page-2', title: 'Page 2', summary: 'Page 2 Summary' },
@@ -17,3 +20,34 @@ export const data = {
   sections: [],
   pages: initialPages,
 }
+
+export const menuLanguage: MenuProps['items'] = [
+  {
+    label: 'Vietnam',
+    key: 'vn',
+    icon: <span>🇻🇳</span>,
+  },
+  {
+    label: 'English',
+    key: 'en',
+    icon: <span>🇺🇸</span>,
+  },
+]
+
+export const menuAccount: MenuProps['items'] = [
+  {
+    label: 'Thông tin',
+    key: 'account-center',
+    icon: <HiOutlineUser />,
+  },
+  {
+    label: 'Cài đặt',
+    key: 'account-setting',
+    icon: <HiOutlineCog />,
+  },
+  {
+    label: 'Đăng xuất',
+    key: 'logout',
+    icon: <HiOutlineLogout />,
+  },
+]

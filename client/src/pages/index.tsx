@@ -1,8 +1,7 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import NewPagePanel from '../containers/home-container'
-
-const Home: NextPage = () => {
+import HomeContainer from '../containers/home'
+import DefaultLayout from '../layouts/default'
+export default function HomePage() {
   return (
     <>
       <Head>
@@ -11,9 +10,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NewPagePanel />
+      <HomeContainer />
     </>
   )
 }
 
-export default Home
+HomePage.getLayout = (page: React.ReactElement) => {
+  return <DefaultLayout>{page}</DefaultLayout>
+}
