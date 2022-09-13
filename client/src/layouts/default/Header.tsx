@@ -11,7 +11,8 @@ const HeaderLayout = (): React.ReactElement => {
   return (
     <Layout.Header
       style={{
-        // borderBottom: '1px solid rgb(203 213 225)',
+        backgroundColor: 'white',
+        borderBottom: '1px solid rgb(203 213 225)',
         width: '100%',
         position: 'fixed',
         left: 0,
@@ -21,7 +22,7 @@ const HeaderLayout = (): React.ReactElement => {
         minWidth: 800,
       }}
     >
-      <Row className="h-16 text-white shadow" justify="space-between" align="middle">
+      <Row justify="space-between" align="middle">
         <Space className="logo" align="center">
           <Image preview={false} width={30} src={urlLogo} alt="logo" />
           <span className="block text-lg font-bold">Landing Pages</span>

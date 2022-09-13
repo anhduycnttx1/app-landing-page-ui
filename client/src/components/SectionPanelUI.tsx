@@ -1,9 +1,9 @@
 import React from 'react'
 type PropsSectionPanel = {
-  section: any
+  section: { id: string; title: string; widgets: never[] }
   children: any
 }
-export default function SectionPanel({ section, children }: PropsSectionPanel) {
+export default function SectionPanelUI({ section, children }: PropsSectionPanel) {
   return (
     <div className="bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
