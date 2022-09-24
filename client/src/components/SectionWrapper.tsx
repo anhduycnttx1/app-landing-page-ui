@@ -5,5 +5,5 @@ type SectionsWrapperProps = {
 }
 
 export default function SectionsWrapper({ children }: SectionsWrapperProps) {
-  return <div className="w-full">{children}</div>
+  return <div className="w-full my-2">{children}</div>
 }

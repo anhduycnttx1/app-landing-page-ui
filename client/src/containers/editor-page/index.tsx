@@ -6,31 +6,36 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  MouseSensor,
-  TouchSensor,
 } from '@dnd-kit/core'
 
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Button, Row, Space } from 'antd'
 import React, { useState } from 'react'
-import { EditorLayoutUI, EmptySectionPagePanel, SectionPanelUI, SectionsWrapper, Sortable } from '../../components'
+import { EditorLayoutUI, SectionsWrapper, SortableSection, EmptySectionPagePanel } from '../../components'
 import { v4 as uuidv4 } from 'uuid'
 
 type EditorContainerProps = {
   pageId: string | string[] | undefined
 }
-type SectionsType = { id: string | number; name: string; widgets: never[]; column: number; index: number; type: string }
+
+export type SectionType = {
+  id: string | number
+  name: string
+  widgets: never[]
+  column: number
+  index: number
+  type: string
+}
 
 export default function NewResourceContainer(props: EditorContainerProps) {
-  const [sections, setSections] = useState<SectionsType[]>([])
+  const [sections, setSections] = useState<SectionType[]>([])
+  const [activeId, setActiveId] = useState(null)
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   )
-
-  console.log(sections)
   const handlerButtonAddSection = () => {
     const newId = uuidv4()
     setSections([
@@ -38,7 +43,7 @@ export default function NewResourceContainer(props: EditorContainerProps) {
       {
         id: newId,
         index: sections.length,
-        name: `Section New`,
+        name: 'SECTION',
         widgets: [],
         column: 1,
         type: 'section',
@@ -47,20 +52,34 @@ export default function NewResourceContainer(props: EditorContainerProps) {
   }
   return (
     <>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={sections.map((section) => section.id)} strategy={verticalListSortingStrategy}>
-          <EditorLayoutUI>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <EditorLayoutUI>
+          <SortableContext items={sections.map((section) => section.id)} strategy={rectSortingStrategy}>
             {sections[0] ? (
               <SectionsWrapper>
                 <Space direction="vertical" className="w-full">
                   {sections.map((section, index) => (
-                    <Sortable id={section.id} key={index}>
-                      <div className="px-5 py-2 shadow-sm cursor-pointer">
-                        {section.name} - id:
-                        {section.id}
-                      </div>
-                    </Sortable>
+                    <SortableSection id={section.id} sections={sections} setSections={setSections} key={index}>
+                      <SectionPanel section={section} />
+                    </SortableSection>
                   ))}
+                  <DragOverlay>
+                    {activeId ? (
+                      <div
+                        style={{
+                          backgroundColor: 'red',
+                        }}
+                      ></div>
+                    ) : // id={activeId}
+                    // page={pages.find((page) => `sortable-${page.id}` === activeId)}
+
+                    null}
+                  </DragOverlay>
                   <Row className="w-full py-3" justify="center" align="middle">
                     <Button onClick={handlerButtonAddSection} type="link">
                       Thêm mới Sections
@@ -75,19 +94,20 @@ export default function NewResourceContainer(props: EditorContainerProps) {
                 </Button>
               </Row>
             )}
-          </EditorLayoutUI>
-        </SortableContext>
+          </SortableContext>
+        </EditorLayoutUI>
       </DndContext>
     </>
   )
+  function handleDragStart(event: any) {
+    setActiveId(event.active.id)
+  }
   function handleDragEnd(event: any) {
     const { active, over } = event
-
     if (active.id !== over.id) {
-      console.log(event)
       setSections((sections) => {
-        const oldIndex = sections.findIndex((section: SectionsType) => section.id === active.id)
-        const newIndex = sections.findIndex((section: SectionsType) => section.id === over.id)
+        const oldIndex = sections.findIndex((section: SectionType) => section.id === active.id)
+        const newIndex = sections.findIndex((section: SectionType) => section.id === over.id)
 
         return arrayMove(sections, oldIndex, newIndex)
       })
@@ -98,14 +118,16 @@ export default function NewResourceContainer(props: EditorContainerProps) {
   }
 }
 // ====================================
-// type SectionPanelProps = {
-//   section: SectionsType
-//   setSection: any
-// }
+type SectionPanelProps = {
+  section: SectionType
+  setSection?: any
+}
 
-// function SectionPanel({ section, setSection }: SectionPanelProps) {
+function SectionPanel({ section, setSection }: SectionPanelProps) {
+  const { widgets } = section
+  return <div className="px-2 py-1">{widgets[0] ? <div>as</div> : <EmptySectionPagePanel />}</div>
+}
 //   const [activeId, setActiveId] = useState(null)
-//   const { widgets } = section
 
 //   const sensors = useSensors(
 //     useSensor(PointerSensor),
